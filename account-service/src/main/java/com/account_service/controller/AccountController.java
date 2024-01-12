@@ -35,7 +35,7 @@ public class AccountController {
 
     // Get single Account Details
     @GetMapping("/{accountId}")
-    public ResponseEntity<Account> getAccount(@PathVariable String accountId)
+    public ResponseEntity<Account> getAccount(@PathVariable Long accountId)
     {
         return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(accountId));
     }
@@ -43,7 +43,7 @@ public class AccountController {
     // Get Accounts using Customer ID
 
     @GetMapping("/user/{customerId}")
-    public ResponseEntity<List<Account>> getAccountsUsingCustomerID(@PathVariable String customerId)
+    public ResponseEntity<List<Account>> getAccountsUsingCustomerID(@PathVariable Long customerId)
     {
         return ResponseEntity.ok(accountService.getAccountByCustomerId(customerId));
     }
@@ -59,14 +59,14 @@ public class AccountController {
     // update account
 
     @PutMapping("/{accountID}")
-    public ResponseEntity<Account> updateAccount(@RequestBody Account account, @PathVariable String accountID){
+    public ResponseEntity<Account> updateAccount(@RequestBody Account account, @PathVariable Long accountID){
 
         return ResponseEntity.status(HttpStatus.OK).body(accountService.updateAccount(accountID,account));
     }
 
     // Add Money
     @PutMapping("/addmoney/{accountID}")
-    public ResponseEntity<Account> addMoney(@PathVariable String accountID,@RequestParam int amount,  @RequestParam Long customerId)
+    public ResponseEntity<Account> addMoney(@PathVariable Long accountID,@RequestParam int amount,  @RequestParam Long customerId)
     {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(accountService.addBalance(accountID,amount, customerId));
@@ -75,7 +75,9 @@ public class AccountController {
 
     // withdraw Money
     @PutMapping("/withdraw/{accountID}")
-    public ResponseEntity<Account> withdraw(@PathVariable String accountID,@RequestParam int amount, @RequestParam String customerId)
+    public ResponseEntity<Account> withdraw(@PathVariable Long accountID,
+                                            @RequestParam int amount,
+                                            @RequestParam Long customerId)
     {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -85,7 +87,7 @@ public class AccountController {
     // Delete Account
 
     @DeleteMapping("/{accountId}")
-    public ApiResponse deleteAccount(@PathVariable String accountId)
+    public ApiResponse deleteAccount(@PathVariable Long accountId)
     {
         this.accountService.delete(accountId);
         return new ApiResponse("Account is Successfully Deleted", true);
@@ -94,7 +96,7 @@ public class AccountController {
     // Delete Account using customerId
 
     @DeleteMapping("user/{customerId}")
-    public ApiResponse deleteAccountByUserId(@PathVariable String customerId)
+    public ApiResponse deleteAccountByUserId(@PathVariable Long customerId)
     {
         this.accountService.deleteAccountUsingCustomerId(customerId);
         return new ApiResponse(" Accounts with given userId is deleted Successfully", true);

@@ -68,7 +68,7 @@ public class AccountService   {
     }
 
 
-    public Account getAccount(String id) {
+    public Account getAccount(Long id) {
 
         // Getting Accounts from ACCOUNT SERVICE
 
@@ -85,11 +85,11 @@ public class AccountService   {
 
     }
 
-    public List<Account> getAccountByCustomerId(String customerId) {
+    public List<Account> getAccountByCustomerId(Long customerId) {
         return accountRepository.findByCustomerId(customerId);
     }
 
-    public Account updateAccount(String id, Account account) {
+    public Account updateAccount(Long id, Account account) {
 
         Account newAccount = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account with given id not found  try again with correct details!!"));
         newAccount.setAccountType(account.getAccountType());
@@ -98,7 +98,7 @@ public class AccountService   {
     }
 
     @Transactional
-    public Account addBalance(String id, int amount, Long customerId) {
+    public Account addBalance(Long id, int amount, Long customerId) {
 
 
             Account newAccount = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account with given id not found try again with correct details !!"));
@@ -123,7 +123,7 @@ public class AccountService   {
 
     }
 
-    public Account withdrawBalance(String id, int amount, String customerId) {
+    public Account withdrawBalance(Long id, int amount, Long customerId) {
 
 
             Account newAccount = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account with given id not found try again with correct details !!"));
@@ -148,14 +148,14 @@ public class AccountService   {
     }
 
 
-    public void delete(String id) {
+    public void delete(Long id) {
 
         Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account with given id not found !!"));
         this.accountRepository.delete(account);
 
     }
 
-    public void deleteAccountUsingCustomerId(String customerId) {
+    public void deleteAccountUsingCustomerId(Long customerId) {
 
         List<Account> accounts = accountRepository.findByCustomerId(customerId);
 
