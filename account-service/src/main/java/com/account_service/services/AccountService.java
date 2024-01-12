@@ -27,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AccountService   {
 
+    @Value("${customer.service.url}")
+    private String customerServiceUrl;
 
     @Value("${transaction.amqp.queue}")
     private String transactionQueue;
@@ -77,7 +79,8 @@ public class AccountService   {
 
             // Getting customers from USER SERVICE
 
-            Customer customer = restTemplate.getForObject("http://CUSTOMER-SERVICE/customer/" + account.getCustomerId(), Customer.class);
+//            Customer customer = restTemplate.getForObject("http://CUSTOMER-SERVICE/customer/" + account.getCustomerId(), Customer.class);
+            Customer customer = restTemplate.getForObject(customerServiceUrl + account.getCustomerId(), Customer.class);
 
 //            account.setCustomer(customer);
 
@@ -103,9 +106,10 @@ public class AccountService   {
 
             Account newAccount = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account with given id not found try again with correct details !!"));
 
-            Customer customer = restTemplate.getForObject("http://CUSTOMER-SERVICE/customer/" + customerId, Customer.class);
+//            Customer customer = restTemplate.getForObject("http://CUSTOMER-SERVICE/customer/" + customerId, Customer.class);
+         Customer customer = restTemplate.getForObject(customerServiceUrl + customerId, Customer.class);
 
-            if (customer == null) {
+        if (customer == null) {
                 throw new ResourceNotFoundException("Customer with given id not found try again with correct details !!");
             }
 
@@ -128,9 +132,11 @@ public class AccountService   {
 
             Account newAccount = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account with given id not found try again with correct details !!"));
 
-            Customer customer = restTemplate.getForObject("http://CUSTOMER-SERVICE/customer/" + customerId, Customer.class);
+//            Customer customer = restTemplate.getForObject("http://CUSTOMER-SERVICE/customer/" + customerId, Customer.class);
 
-            if (customer == null) {
+        Customer customer = restTemplate.getForObject(customerServiceUrl + customerId, Customer.class);
+
+        if (customer == null) {
                 throw new ResourceNotFoundException("Customer with given id not found try again with correct details !!");
             } else {
                 if(newAccount.getBalance()

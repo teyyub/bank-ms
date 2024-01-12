@@ -22,8 +22,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleGlobalException(Exception e)
-    {
+    public ResponseEntity<?> handleGlobalException(Exception e) {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
