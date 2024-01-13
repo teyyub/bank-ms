@@ -1,9 +1,14 @@
 package com.account_service.controller;
 
-import com.account_service.dtos.AccountDto;
-import com.account_service.entity.Account;
-import com.account_service.services.AccountService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,14 +18,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.account_service.dtos.AccountDto;
+import com.account_service.entity.Account;
+import com.account_service.services.AccountService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 class AccountControllerTest {
 

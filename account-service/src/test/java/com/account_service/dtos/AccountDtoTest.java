@@ -1,10 +1,10 @@
 package com.account_service.dtos;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class AccountDtoTest {
 

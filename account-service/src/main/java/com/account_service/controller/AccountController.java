@@ -12,6 +12,7 @@ import com.account_service.entity.Account;
 import com.account_service.payload.ApiResponse;
 import com.account_service.services.AccountService;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -66,7 +67,7 @@ public class AccountController {
     }
 
     // Add Money
-    @PutMapping("/addmoney/{accountID}")
+    @PutMapping("/top-up/{accountID}")
     public ResponseEntity<Account> addMoney(@PathVariable Long accountID,@RequestParam int amount,  @RequestParam Long customerId)
     {
         return ResponseEntity.status(HttpStatus.OK)
@@ -75,7 +76,8 @@ public class AccountController {
 
 
     // withdraw Money
-    @PutMapping("/withdraw/{accountID}")
+    @PutMapping("/purchase/{accountID}")
+    @CircuitBreaker(name = "customer",fallbackMethod = "fallbackMethod")
     public ResponseEntity<Account> withdraw(@PathVariable Long accountID,
                                             @RequestParam int amount,
                                             @RequestParam Long customerId)
@@ -83,6 +85,11 @@ public class AccountController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(accountService.withdrawBalance(accountID,amount, customerId));
+    }
+
+    public ResponseEntity<?> fallbackMethod(Long accountID, int amount,  Long customerId, RuntimeException exception)
+    {
+        return ResponseEntity.ok("Service is unavailable")  ;
     }
 
     // Delete Account
@@ -103,5 +110,6 @@ public class AccountController {
         return new ApiResponse(" Accounts with given userId is deleted Successfully", true);
 
     }
+
 
 }

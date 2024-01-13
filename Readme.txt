@@ -36,4 +36,6 @@ CUSTOMER-SERVICE is running on port 8082
 ACCOUNT-SERVICE is running on port 8083
 API-GATEWAY is running on port 8084
 SERVICE-CONFIG is running on port 8085
-SERVICE-Registry(EUREKA) is running on port 8761 
+SERVICE-Registry(EUREKA) is running on port 8761
+NOTIFICATION-SERVICE
+GREYLOG-SERVICE

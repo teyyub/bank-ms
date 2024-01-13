@@ -1,22 +1,23 @@
 package com.account_service.services;
 
-import com.account_service.dtos.AccountDto;
-import com.account_service.entity.Account;
-import com.account_service.repositories.AccountRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.TestPropertySource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import com.account_service.dtos.AccountDto;
+import com.account_service.entity.Account;
+import com.account_service.repositories.AccountRepository;
+
 //by default h2 de yaradir istesek propertiden oxuya bilerik
 //@TestPropertySource(locations = "classpath:test.properties")
 class AccountServiceTest {
