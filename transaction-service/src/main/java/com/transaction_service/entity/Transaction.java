@@ -3,6 +3,8 @@ package com.transaction_service.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,8 +23,6 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    Account account;
     private Long accountId;
     @Enumerated(EnumType.STRING)
     @Column(name = "transaction_type", length = 20)
@@ -30,6 +30,7 @@ public class Transaction {
 
     private BigDecimal amount;
 
+    @CreationTimestamp
     LocalDateTime transactionDate;
 
 }

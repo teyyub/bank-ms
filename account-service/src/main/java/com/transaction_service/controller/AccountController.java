@@ -35,9 +35,10 @@ public class AccountController {
 
     // Get single Account Details
     @GetMapping("/{accountId}")
-    public ResponseEntity<Account> getAccount(@PathVariable Long accountId)
+    public ResponseEntity<?> getAccount(@PathVariable Long accountId)
     {
-        return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(accountId));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(accountService.getAccount(accountId));
     }
 
     // Get Accounts using Customer ID

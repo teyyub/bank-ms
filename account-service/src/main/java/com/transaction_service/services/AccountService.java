@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.transaction_service.config.TransactionProducer;
 import com.transaction_service.dtos.AccountDto;
+import com.transaction_service.dtos.AccountResponseDto;
 import com.transaction_service.entity.*;
 import com.transaction_service.exceptions.ResourceNotFoundException;
 import com.transaction_service.repositories.AccountRepository;
@@ -56,18 +57,18 @@ public class AccountService   {
     }
 
 
-    public Account getAccount(Long id) {
+    public AccountResponseDto getAccount(Long id) {
         // Getting Accounts from ACCOUNT SERVICE
             Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account with given id not found try again with correct details !!"));
 
             // Getting customers from USER SERVICE
 
 //            Customer customer = restTemplate.getForObject("http://CUSTOMER-SERVICE/customer/" + account.getCustomerId(), Customer.class);
-            Customer customer = restTemplate.getForObject(customerServiceUrl + account.getCustomerId(), Customer.class);
+//            Customer customer = restTemplate.getForObject(customerServiceUrl + account.getCustomerId(), Customer.class);
 
 //            account.setCustomer(customer);
 
-            return account;
+            return toAccountResponse(account);
 
     }
 
@@ -83,32 +84,40 @@ public class AccountService   {
         return accountRepository.save(newAccount);
     }
 
-    @Transactional
-    public Account addBalance(Long id, int amount, Long customerId) {
+    public Account updateAccountBalance(Long id, BigDecimal balance) {
 
-
-            Account newAccount = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account with given id not found try again with correct details !!"));
-
-//            Customer customer = restTemplate.getForObject("http://CUSTOMER-SERVICE/customer/" + customerId, Customer.class);
-         Customer customer = restTemplate.getForObject(customerServiceUrl + customerId, Customer.class);
-
-        if (customer == null) {
-                throw new ResourceNotFoundException("Customer with given id not found try again with correct details !!");
-            }
-
-                BigDecimal newBalance = newAccount.getBalance().add(BigDecimal.valueOf(amount));
-                newAccount.setBalance(newBalance);
-                newAccount.setLastActivity(LocalDateTime.now());
-
-                Transaction transaction = new Transaction();
-                transaction.setAccountId(newAccount.getAccountId());
-//                transaction.setLastActivity(new Date());
-                transaction.setAmount(amount);
-                transactionRepository.save(transaction);
-                transactionProducer.sendTo(transactionQueue,transaction);
-                return accountRepository.save(newAccount);
-
+        Account newAccount = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account with given id not found  try again with correct details!!"));
+        newAccount.setBalance(balance);
+        newAccount.setLastActivity(LocalDateTime.now());
+        return accountRepository.save(newAccount);
     }
+
+//    @Transactional
+//    public Account addBalance(Long id, int amount, Long customerId) {
+//
+//
+//            Account newAccount = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account with given id not found try again with correct details !!"));
+//
+////            Customer customer = restTemplate.getForObject("http://CUSTOMER-SERVICE/customer/" + customerId, Customer.class);
+//         Customer customer = restTemplate.getForObject(customerServiceUrl + customerId, Customer.class);
+//
+//        if (customer == null) {
+//                throw new ResourceNotFoundException("Customer with given id not found try again with correct details !!");
+//            }
+//
+//                BigDecimal newBalance = newAccount.getBalance().add(BigDecimal.valueOf(amount));
+//                newAccount.setBalance(newBalance);
+//                newAccount.setLastActivity(LocalDateTime.now());
+//
+//                Transaction transaction = new Transaction();
+//                transaction.setAccountId(newAccount.getAccountId());
+////                transaction.setLastActivity(new Date());
+//                transaction.setAmount(amount);
+//                transactionRepository.save(transaction);
+//                transactionProducer.sendTo(transactionQueue,transaction);
+//                return accountRepository.save(newAccount);
+//
+//    }
 
     public Account withdrawBalance(Long id, int amount, Long customerId) {
 
@@ -151,12 +160,21 @@ public class AccountService   {
         {
             this.accountRepository.delete(account);
         }
-
-
-
     }
 
-    private static Account toAccount(Account account,AccountDto dto){
+    public static AccountResponseDto toAccountResponse(Account ent){
+        return AccountResponseDto.builder()
+                .accountId(ent.getAccountId())
+                .balance(ent.getBalance())
+                .build();
+    }
+
+    public static Account toAccount(AccountResponseDto dto){
+        return Account.builder()
+                .balance(dto.getBalance())
+                .build();
+    }
+    public static Account toAccount(Account account,AccountDto dto){
         account = Account.builder()
                 .customerId(dto.getCustomerId())
                 .balance(new BigDecimal(100))

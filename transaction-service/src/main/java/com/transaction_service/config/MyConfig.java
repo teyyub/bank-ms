@@ -38,4 +38,9 @@ public class MyConfig {
     public Queue queueCreation(){
         return new Queue("transactionQueue",true,false,false);
     }
+//    @Bean
+//    public Queue accountQueueCreation(){
+//        return new Queue("${account.amqp.queue}",true,false,false);
+//    }
+
 }

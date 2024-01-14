@@ -2,7 +2,6 @@ package com.transaction_service.dtos;
 
 import java.math.BigDecimal;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -11,9 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 @Builder
-public class AccountDto {
-    @NotNull
-    private Long customerId;
-    private String gsmNumber;
+public class AccountResponseDto {
+    private Long accountId;
     private BigDecimal balance;
 }

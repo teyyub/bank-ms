@@ -38,4 +38,8 @@ public class MyConfig {
     public Queue queueCreation(){
         return new Queue("transactionQueue",true,false,false);
     }
+    @Bean
+    public Queue accountQueueCreation(){
+        return new Queue("transactionQueueBalance",true,false,false);
+    }
 }
