@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="customer-service" />
         <module name="push-notification-service" />
+        <module name="transaction-service" />
         <module name="graylog-spring" />
         <module name="ConfigServer" />
         <module name="ServiceRegistry" />
@@ -32,6 +33,7 @@
       <module name="graylog-logs" options="-parameters" />
       <module name="graylog-spring" options="-parameters" />
       <module name="push-notification-service" options="-parameters" />
+      <module name="transaction-service" options="-parameters" />
     </option>
   </component>
 </project>

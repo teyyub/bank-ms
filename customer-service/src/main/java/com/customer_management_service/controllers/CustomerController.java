@@ -1,11 +1,11 @@
 package com.customer_management_service.controllers;
 
-
 import com.customer_management_service.dtos.CustomerDto;
 import com.customer_management_service.entites.Customer;
 import com.customer_management_service.payloads.ApiResponse;
 import com.customer_management_service.services.CustomerService;
-import javax.validation.Valid;
+
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class CustomerController {
 
     // Create
     @PostMapping
-    public ResponseEntity<Customer> createUser(@RequestBody
+    public ResponseEntity<?> createUser(@RequestBody
                                                    @Valid CustomerDto customerDto){
 
         return ResponseEntity.
@@ -40,7 +40,7 @@ public class CustomerController {
 
     // Get one
     @GetMapping("/{customerId}")
-    public ResponseEntity<Customer> getCustomer(@PathVariable String customerId){
+    public ResponseEntity<?> getCustomer(@PathVariable String customerId){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(customerService.get(customerId));
@@ -56,7 +56,7 @@ public class CustomerController {
     //update
 
     @PutMapping("/{customerId}")
-    public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer, @PathVariable String customerId) {
+    public ResponseEntity<Customer> updateCustomer(@RequestBody CustomerDto customer, @PathVariable String customerId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(customerService.update(customerId, customer));

@@ -24,11 +24,13 @@ import java.util.UUID;
 public class CustomerService   {
     @Value("${customer.amqp.queue}")
     private String customerQueue;
+//    @Value("${account.service.base-url}")
+//    private String accountServiceBaseUrl;
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private RestTemplate restTemplate;
+//    @Autowired
+//    private RestTemplate restTemplate;
 
     @Autowired
     private CustomerProducer rabbitProducer;
@@ -36,56 +38,58 @@ public class CustomerService   {
     private Logger logger = LoggerFactory.getLogger(CustomerService.class);
 
 
-    public Customer create(CustomerDto customerDto) {
+    public CustomerDto create(CustomerDto customerDto) {
          Optional<Customer>  findCustomer =
                 customerRepository.findByGsmNumber(customerDto.getGsmNumber());
          if(findCustomer.isPresent()) {
-             throw new AlreadyExistException("aaa");
-         }
-         Customer customer = new Customer();
-         customer.setName(customerDto.getName());
-         customer.setSurname(customerDto.getSurname());
-         customer.setGsmNumber(customerDto.getGsmNumber());
-         customer.setBirthDate(customerDto.getBirthDate());
-         customer.setBalance(BigDecimal.valueOf(100));
-
+             throw new AlreadyExistException("Customer with GSM number " + customerDto.getGsmNumber() + " already exists");
+    }
+         Customer customer = toCustomer(new Customer(),customerDto);
          customerRepository.save(customer);
+         customerDto.setCustomerId(customer.getCustomerId());
          logger.info("Producer> Message Sent");
-         rabbitProducer.sendTo(customerQueue,customer);
-        return customer;
+         //bunlari ile convert bas vermedi ona gore helelik bele edirem
+         customerDto.setBirthDate(null);
+         rabbitProducer.sendTo(customerQueue,customerDto);
+        return customerDto;
     }
 
     public List<Customer> getAll() {
         return customerRepository.findAll();
     }
 
-    public Customer get(String id) {
-
+    public CustomerDto get(String id) {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer with given id not found"));
-
-        return customer;
+        return toCustomerDto(customer);
     }
 
-    public Customer update(String id, Customer customer) {
-        Customer customer1 = this.customerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer with given id not found"));
-        customer1.setName(customer.getName());
-//        customer1.setPhone(customer.getPhone());
-//        customer1.setEmail(customer.getEmail());
-//        customer1.setAddress(customer.getAddress());
-
-
-        return customerRepository.save(customer1);
+    public Customer update(String id, CustomerDto dto) {
+        Customer customerUpdate = this.customerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer with given id not found"));
+        toCustomer(customerUpdate,dto);
+        return customerRepository.save(customerUpdate);
     }
 
     public void delete(String id) {
-
         Customer customer = this.customerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer with given id not found"));
-
-        // Deleting Accounts from ACCOUNT-SERVICE
-        // http://localhost:8083/account/user/d79beee9-de29-4633-91f7-6be276e6e3c4
-
-        restTemplate.delete("http://ACCOUNT-SERVICE/account/user/" + customer.getCustomerId());
-
         this.customerRepository.delete(customer);
+    }
+
+    private static Customer toCustomer(Customer customer,CustomerDto dto){
+           customer = Customer.builder()
+                .name(dto.getName())
+                .surname(dto.getSurname())
+                .gsmNumber(dto.getGsmNumber())
+                .birthDate(dto.getBirthDate()).build();
+        return customer;
+    }
+
+    private static CustomerDto toCustomerDto(Customer customer){
+        CustomerDto dto = CustomerDto.builder()
+                .customerId(customer.getCustomerId())
+                .name(customer.getName())
+                .surname(customer.getSurname())
+                .gsmNumber(customer.getGsmNumber())
+                .birthDate(customer.getBirthDate()).build();
+        return dto;
     }
 }

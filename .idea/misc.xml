@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/ServiceRegistry/pom.xml" />
         <option value="$PROJECT_DIR$/customerManagementService/pom.xml" />
         <option value="$PROJECT_DIR$/account-service/pom.xml" />
+        <option value="$PROJECT_DIR$/transaction-service/pom.xml" />
         <option value="$PROJECT_DIR$/customer-service/pom.xml" />
         <option value="$PROJECT_DIR$/push-notification-service/pom.xml" />
         <option value="$PROJECT_DIR$/graylog-logs/pom.xml" />

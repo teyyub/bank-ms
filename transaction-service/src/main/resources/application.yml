@@ -1,0 +1,17 @@
+version: '3.8'
+server:
+  port: 8088
+spring:
+    datasource:
+      url: jdbc:postgresql://localhost:5444/postgres
+      username: postgres
+      password: postgres
+    jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+    application:
+      name: TRANSACTION-SERVICE
+#    config:
+#      import: optional:configserver:http://localhost:8085
+

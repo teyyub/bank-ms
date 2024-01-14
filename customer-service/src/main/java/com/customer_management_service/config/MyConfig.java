@@ -1,5 +1,6 @@
 package com.customer_management_service.config;
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -21,7 +22,10 @@ public class MyConfig {
     {
         return new RestTemplate();
     }
-
+    @Bean
+    public JavaTimeModule dateTimeModule(){
+        return new JavaTimeModule();
+    }
     @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();

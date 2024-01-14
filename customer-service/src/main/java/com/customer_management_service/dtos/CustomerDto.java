@@ -1,13 +1,15 @@
 package com.customer_management_service.dtos;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.*;
-import org.jetbrains.annotations.NotNull;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -15,13 +17,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 public class CustomerDto {
 
-    private String customerId;
+    private Long customerId;
     @NotNull
     private String name;
     @NotNull
     private String surname;
+    @JsonFormat(pattern = "dd.MM.yyyy",shape = JsonFormat.Shape.STRING)
     private LocalDate birthDate;
     @NotNull
     private String gsmNumber;

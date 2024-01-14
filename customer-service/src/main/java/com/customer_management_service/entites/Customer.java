@@ -1,14 +1,18 @@
 package com.customer_management_service.entites;
 
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
-
-import java.math.BigDecimal;
+import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -18,6 +22,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "customers")
+@Builder
 public class Customer {
 
     @Id
@@ -29,6 +34,6 @@ public class Customer {
     @Column(nullable = false)
     private String gsmNumber;
     private LocalDate birthDate;
-    private BigDecimal balance;
-
+    @CreationTimestamp
+    LocalDateTime createdAt;
 }

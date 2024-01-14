@@ -39,3 +39,25 @@ SERVICE-CONFIG is running on port 8085
 SERVICE-Registry(EUREKA) is running on port 8761
 NOTIFICATION-SERVICE
 GREYLOG-SERVICE
+
+
+CREATE TABLE account_table (
+    customer_id INT PRIMARY KEY,
+    balance DECIMAL(10, 2) DEFAULT 100.00,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE transactions (
+    transaction_id SERIAL PRIMARY KEY,
+    customer_id INT NOT NULL,
+    transaction_type VARCHAR(20) NOT NULL, -- top-up, purchase, refund, etc.
+    amount DECIMAL(10, 2) NOT NULL,
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE customers (
+    customer_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
+    birth_date DATE NOT NULL,
+    gsm_number VARCHAR(15) NOT NULL
+);
